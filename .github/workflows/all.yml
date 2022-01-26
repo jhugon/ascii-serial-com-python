@@ -1,0 +1,52 @@
+name: Python Workflow
+
+defaults:
+  run:
+    shell: bash
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  python-mypy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install mypy
+        pip install .
+    - name: Static Analysis with mypy
+      run: |
+        mypy asciiserialcom tests
+
+  python-unittest:
+    strategy:
+      matrix:
+        pythonversion: ["3.7","3.8","3.9","3.10"]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.pythonversion }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.pythonversion }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install coverage
+        pip install .
+    - name: Python unittest
+      run: |
+        coverage run --source=asciiserialcom -m unittest tests
+    - name: Python coverage report
+      run: |
+        coverage report
