@@ -1,2 +1,3 @@
-# ascii-serial-com-python
+# ASCII Serial Com Python
+
 Python interface to ASCII-Serial-Com
