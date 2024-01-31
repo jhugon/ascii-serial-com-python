@@ -26,12 +26,12 @@ jobs:
         pip install .
     - name: Static Analysis with mypy
       run: |
-        mypy asciiserialcom tests
+        mypy
 
   python-unittest:
     strategy:
       matrix:
-        pythonversion: ["3.10","3.11"]
+        pythonversion: ["3.10","3.11","3.12"]
     runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v2
